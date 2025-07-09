@@ -1,7 +1,6 @@
 /**
- * @file m5stick_mqtt_digiclock.ino
+ * @file main.cpp
  * @brief M5StickCPlus2とDigi-Clock Unitを使った、MQTTセンサーモニター兼NTPデジタル時計
- *
  * @details
  * このプログラムは、2つの役割を同時にこなします。
  * 1. M5StickCPlus2本体のカラー液晶画面に、MQTTプロトコルで受信したセンサー情報（CO2濃度など）を表示します。
@@ -10,7 +9,7 @@
  *
  * Wi-Fiの接続情報などは、プライバシー保護のため、同じフォルダにある `config.h` という別のファイルに記述されています。
  *
- * @author Your Name
+ * @author omiya-bonsai
  * @date 2025-07-09
  */
 

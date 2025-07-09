@@ -5,55 +5,108 @@
 1.  **MQTTセンサーモニター:** MQTTブローカーから受信したセンサーデータ（CO2濃度、不快指数など）を本体のカラー液晶画面に表示します。
 2.  **NTPデジタル時計:** Groveポートに接続した外部の7セグメントLED（Digi-Clock Unit）に、インターネット経由で取得した正確な日本時刻を「HH:MM」形式で表示します。
 
----
+-----
 
 ## 主な機能
 
-- **MQTTデータ受信:** 指定したMQTTトピックを購読し、JSON形式のセンサーデータを受信・解析します。
-- **本体LCD表示:** 受信したCO2濃度と不快指数(THI)を、3秒ごとに交互に大きく表示します。
-- **NTP時刻同期:** Wi-Fi接続後、NTPサーバーから正確な時刻を取得し、内部時計を同期させます。
-- **外部時計表示:** Grove接続のDigi-Clock Unitに、同期した時刻をHH:MM形式（24時間表記）で安定して表示します（表示更新は1分ごと）。
-- **ステータス表示:** WiFiやMQTTの接続状態、現在時刻などを本体画面のステータスバーに表示します。
-- **設定の外部化:** Wi-FiのSSIDやパスワード、MQTTブローカー情報などの個人設定を`config.h`に分離しており、安全にコードを共有できます。
+  - **MQTTデータ受信:** 指定したMQTTトピックを購読し、JSON形式のセンサーデータを受信・解析します。
+  - **本体LCD表示:** 受信したCO2濃度と不快指数(THI)を、3秒ごとに交互に大きく表示します。
+  - **NTP時刻同期:** Wi-Fi接続後、NTPサーバーから正確な時刻を取得し、内部時計を同期させます。
+  - **外部時計表示:** Grove接続のDigi-Clock Unitに、同期した時刻をHH:MM形式（24時間表記）で安定して表示します（表示更新は1分ごと）。
+  - **ステータス表示:** WiFiやMQTTの接続状態、現在時刻などを本体画面のステータスバーに表示します。
+  - **設定の外部化:** Wi-FiのSSIDやパスワード、MQTTブローカー情報などの個人設定を`config.h`に分離しており、安全にコードを共有できます。
 
----
+-----
 
 ## 必要なもの
 
 ### ハードウェア
-- M5StickCPlus2
-- M5Stack Digi-Clock Unit
-- Grove - HY2.0 4ピンケーブル
+
+  - M5StickCPlus2
+  - M5Stack Digi-Clock Unit
+  - Grove - HY2.0 4ピンケーブル
 
 ### ソフトウェア
-- Arduino IDE (バージョン 2.x を推奨)
-- M5Stackボード定義 (Arduino IDEのボードマネージャからインストール)
-- 以下のArduinoライブラリ:
-  - `M5StickCPlus2` (M5Stackボード定義に含まれます)
-  - `PubSubClient` (ライブラリマネージャからインストール)
-  - `ArduinoJson` (ライブラリマネージャからインストール)
-  - `NTPClient` (ライブラリマネージャからインストール)
-  - `M5Unit-DigiClock` (M5Stack公式。ライブラリマネージャで見つからない場合はZIPでインストール)
 
----
+  - **Visual Studio Code (VSCode)**
+  - **PlatformIO IDE Extension** (VSCodeにインストール)
+  - **Git** (バージョン管理システム)
+
+### PlatformIOで自動的にインストールされるライブラリとフレームワーク:
+
+プロジェクトの`platformio.ini`ファイルに依存関係として記述されます。
+
+  - **Framework:** `arduino` (Arduino Core for ESP32)
+  - **Platform:** `espressif32` (ESP32ボードのPlatformIOプラットフォーム)
+  - **ライブラリ:**
+      - `M5StickCPlus2` (M5Stack公式ライブラリ - GitHub URLで直接指定)
+      - `M5Unit-DigiClock` (M5Stack公式ライブラリ - GitHub URLで直接指定)
+      - `PubSubClient`
+      - `ArduinoJson`
+      - `NTPClient`
+
+-----
 
 ## セットアップ方法
 
 1.  **ハードウェアの接続:**
     M5StickCPlus2のGroveポート（本体上部の4ピンコネクタ）と、Digi-Clock UnitをGroveケーブルで接続します。
 
-2.  **Arduino IDEの準備:**
-    - Arduino IDEをインストールします。
-    - ボードマネージャから「M5Stack」で検索し、M5Stackのボード定義をインストールします。
-    - ライブラリマネージャから、上記の必要なライブラリを全てインストールします。
+2.  **VSCodeとPlatformIOの準備:**
 
-3.  **設定ファイルの準備 (最重要):**
-    - このプロジェクトのフォルダに、`config.example.h`というファイルが含まれています。
-    - そのファイルをコピー＆ペーストして、複製したファイルの名前を **`config.h`** に変更します。
-    - 新しく作成した`config.h`をエディタで開き、ご自身の環境に合わせて**`"YOUR_..."`**の部分を全て書き換えてください。
-    - **注意:** `config.h`ファイルは、`.gitignore`によってGitの管理対象から除外されています。ご自身のパスワードなどの情報が誤ってGitHubに公開されることはありません。
+      - VSCodeをインストールします。
+      - VSCodeを起動し、左側のアクティビティバーにある「拡張機能」アイコン（四角が4つ並んだアイコン）をクリックします。
+      - 検索窓に `PlatformIO IDE` と入力し、表示された拡張機能をインストールします。
+      - PlatformIO Coreのインストールが完了するまで待ちます。（VSCodeの右下に進捗が表示されることがあります）
+
+3.  **新しいPlatformIOプロジェクトの作成:**
+
+      - VSCodeの左側のアクティビティバーにあるPlatformIOのアイコン（アリの絵柄のアイコン）をクリックし、PlatformIO Homeを開きます。
+      - 「PROJECTS」または「Quick Access」セクションにある「**+ New Project**」をクリックします。
+      - 以下の情報を入力します。
+          - **Name:** `M5StickCPlus2_NTP_Clock` (任意のプロジェクト名)
+          - **Board:** `ESP32 Dev Module` を選択します。(M5StickCPlus2は現状PlatformIOのボードリストに直接表示されないため、汎用ESP32ボードを使用し、後で設定を調整します。)
+          - **Framework:** `Arduino` を選択します。
+          - **Location:** デフォルトのままか、任意の保存先を指定します。
+      - 「Finish」をクリックしてプロジェクトを作成します。
+
+4.  **`platformio.ini` の設定とライブラリの指定 (最重要):**
+
+      - 作成されたプロジェクトフォルダ内の `platformio.ini` ファイルを開き、以下のように内容を修正・追記します。
+      - 特に `board` のIDをM5StickCPlus2の内部IDである `m5stickc_plus2` に変更し、PlatformIOがGitHubからライブラリを直接取得するように指定します。
+
+    <!-- end list -->
+
+    ```ini
+    [env:m5stick-c-plus2] ; 環境名は任意で変更可能
+    platform = espressif32
+    board = m5stickc_plus2  ; ★ M5StickCPlus2のボードIDを直接指定
+    framework = arduino
+    monitor_speed = 115200 ; シリアルモニタのボーレートを設定（スケッチのSerial.begin()に合わせてください）
+
+    lib_deps =
+        https://github.com/m5stack/M5StickCPlus2.git ; M5StickCPlus2ライブラリをGitHubから直接取得
+        https://github.com/m5stack/M5Unit-DigiClock.git ; Digi-Clock UnitライブラリをGitHubから直接取得
+        knolleary/PubSubClient@^2.8
+        bblanchon/ArduinoJson@^6.19.0
+        arduino-libraries/NTPClient@^3.2.1
+    ```
+
+      - ファイルを保存します。PlatformIOが自動的に依存関係の解決（ライブラリのダウンロードなど）を開始します。
+
+5.  **ソースコードの移行:**
+
+      - プロジェクトフォルダ内の `src` フォルダに、あなたの既存の`.ino`ファイルと`config.example.h`をコピーします。
+      - `.ino`ファイルは、**`main.cpp`** という名前にリネームすることをお勧めします。
+
+6.  **設定ファイルの準備 (最重要):**
+
+      - `src` フォルダにコピーした `config.example.h` をコピー＆ペーストして、複製したファイルの名前を **`config.h`** に変更します。
+      - 新しく作成した`config.h`をエディタで開き、ご自身の環境に合わせて\*\*`"YOUR_..."`\*\*の部分を全て書き換えてください。
+      - **注意:** `config.h`ファイルは、`.gitignore`によってGitの管理対象から除外されています。ご自身のパスワードなどの情報が誤ってGitHubに公開されることはありません。Gitの追跡から確実に除外するには、`git rm --cached src/config.h` を実行後、変更をコミットしてください。
 
     **`config.h` の設定例:**
+
     ```cpp
     #ifndef CONFIG_H
     #define CONFIG_H
@@ -101,18 +154,19 @@
     #endif // CONFIG_H
     ```
 
----
+-----
 
 ## 使い方
 
 1.  上記の手順に従って、ハードウェアの接続とソフトウェア・設定ファイルの準備を完了させます。
-2.  Arduino IDEで`m5stick_mqtt_digiclock.ino`（メインスケッチ）を開きます。
-3.  ボードとして「M5StickCPlus2」を選択し、正しいシリアルポートを指定します。
-4.  スケッチをM5StickCPlus2に書き込みます。
-5.  起動後、デバイスは自動的にWi-Fiに接続し、時刻同期とMQTTブローカへの接続を開始します。成功すれば、本体画面とDigi-Clock Unitの両方が機能し始めます。
+2.  VSCodeでプロジェクトフォルダを開きます。
+3.  VSCodeの下部ステータスバーにある**チェックマークアイコン**（Build）をクリックしてプロジェクトをビルドします。
+4.  ビルドが成功したら、M5StickCPlus2をUSBケーブルでPCに接続します。
+5.  VSCodeの左側のアクティビティバーにあるPlatformIOアイコン（アリの絵柄）をクリックし、「PROJECT TASKS」セクションの「**Upload**」をクリックしてスケッチをM5StickCPlus2に書き込みます。
+6.  起動後、デバイスは自動的にWi-Fiに接続し、時刻同期とMQTTブローカへの接続を開始します。成功すれば、本体画面とDigi-Clock Unitの両方が機能し始めます。
 
----
+-----
 
 ## ライセンス
 
-このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+このプロジェクトは[MITライセンス](https://www.google.com/search?q=LICENSE)の下で公開されています。
