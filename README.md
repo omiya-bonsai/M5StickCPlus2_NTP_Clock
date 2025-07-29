@@ -2,6 +2,9 @@
 
 このプロジェクトは、一台のM5StickCPlus2を使用して、2つの役割を同時にこなすIoTデバイスの作例です。
 
+![IMG_7492](https://github.com/user-attachments/assets/e5850495-cdfb-458d-88a7-ebac149b5c49)
+
+
 1.  **MQTTセンサーモニター:** MQTTブローカーから受信したセンサーデータ（CO2濃度、不快指数など）を本体のカラー液晶画面に表示します。
 2.  **NTPデジタル時計:** Groveポートに接続した外部の7セグメントLED（Digi-Clock Unit）に、インターネット経由で取得した正確な日本時刻を「HH:MM」形式で表示します。
 
